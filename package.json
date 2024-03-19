@@ -1,0 +1,30 @@
+{
+  "name": "ne",
+  "version": "1.0.0",
+  "description": "natural earth and other data for hosted on cloudflare",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo nada",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syonfox/ne.git"
+  },
+  "keywords": [
+    "free",
+    "map",
+    "natural",
+    "earth",
+    "data",
+    "json"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/syonfox/ne/issues"
+  },
+  "homepage": "https://github.com/syonfox/ne#readme",
+  "dependencies": {
+  }
+}
