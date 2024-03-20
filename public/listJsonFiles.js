@@ -6,41 +6,6 @@ let jsonFiles = [];
 
 let domain = "https://ne.freemap.online/"
 
-// const JSONStream = require('JSONStream');
-//
-//
-//
-// async function getFirstFeatureOrFalse(filePath) {
-//     return new Promise((resolve, reject) => {
-//         // Create a read stream from the file
-//         const fileStream = fs.createReadStream(filePath, { encoding: 'utf8' });
-//
-//         // Use JSONStream to parse the stream
-//         const parser = JSONStream.parse('features.*');
-//
-//         parser.on('data', function(feature) {
-//             resolve(feature); // Resolve the promise with the first feature
-//             parser.pause(); // Pause the parser to stop processing further
-//             fileStream.unpipe(parser); // Unpipe the parser from the stream
-//             parser.end(); // End the parser
-//             fileStream.destroy(); // Destroy the file stream
-//         });
-//
-//         parser.on('end', () => {
-//             resolve(false); // Resolve with false if no data was found before the end of the stream
-//         });
-//
-//         // Handle errors
-//         fileStream.on('error', reject);
-//         parser.on('error', reject);
-//
-//         // Pipe the file stream through the parser
-//         fileStream.pipe(parser);
-//     });
-// }
-//
-
-
 function findJsonFiles(directory) {
     fs.readdirSync(directory, {withFileTypes: true}).forEach(entry => {
         const entryPath = path.join(directory, entry.name);
@@ -113,7 +78,8 @@ const linksHtml = jsonFiles.map((file, index) => {
 
     let defaultColor = "#000096"
     const url = domain + file; // Modify this if you need to transform the file path into a URL
-    return `<li id="style${index}" style="padding: 1em">
+    return `
+    <li id="style${index}" style="padding: 1em">
             <a href="${url}" target="_blank">${file}</a> - 
             <button onclick="navigator.clipboard.writeText('${url}')">Copy URL</button> - 
             <a href="https://freemap.online/zenVector.html?url=${url}" target="_blank">View In JSON Simplifier</a>
@@ -124,7 +90,7 @@ const linksHtml = jsonFiles.map((file, index) => {
                         <div class="mydemo" style="background: ${defaultColor + "80"}; 
                         border: 3px solid;
                         border-color: ${defaultColor + "6E"}">
-                        <span style="padding: 5px">Sample Style Rendering<span></div>
+                        <span style="padding: 5px">Sample Style Rendering</span></div>
             </summary>
             
             <input type="color" name="fill" value="${defaultColor}">    
@@ -154,13 +120,17 @@ const linksHtml = jsonFiles.map((file, index) => {
             <summary>
                    Sample Feature Properties
             </summary>
-            <pre>${JSON.stringify(f.properties, null, 2)}</pre>
+            <pre>
+${JSON.stringify(f.properties, null, 2)}
+</pre>
             </details>
             <input type="text" name="urlayer">
             
             <button name="open"> View on FreeMap</button>
-     
-          </li>`;
+             </details>
+
+      </li>
+`;
 }).join('\n');
 
 const htmlContent = `
@@ -210,7 +180,7 @@ const htmlContent = `
                 let span = demo.querySelector("span")
                  
                 let urlayer = el.querySelector("input[name='urlayer']") 
-                let open = el.querySelector("input[name='open']") 
+                let open = el.querySelector("button[name='open']") 
                 let a = el.querySelector("a") 
             
 
@@ -224,16 +194,34 @@ const htmlContent = `
                         // let urlayer = "u="++ &f=#101010ff42&s=#111111ee02&l=#99ff990012$name";
 
                 const getFill = ()=>{
-                   return "f="+ co2rgba(co2rgba(fill.value, op.value), r.value)
+                   return "f="+ co2rgba(fill.value, op.value) +  parseInt(r.value *100)
                 }
                 const getStroke = ()=>{
-                   return "s="+ co2rgba(co2rgba(strokeC.value, strokeO.value), stroke.value)
+                   return "s="+ co2rgba(strokeC.value, strokeO.value) + parseInt(stroke.value * 100)
                 }
                 const getLabel = ()=>{
                    return "l="+ co2rgba(co2rgba(labelC.value, labelO.value), labelS.value) + "$" +label.value
                 }
 
 
+                open.addEventListener("click", e=>{
+                    
+                    let daParam = "u="+a.href + "&"+ getFill() + "&"+ getStroke() + "&"+ getLabel()
+                    let urlayers = encjs([daParam]);
+                    console.log(urlayers)
+                    let shre_url = "https://freemap.online/map42/?cfairport=1&urlayers="+urlayers;
+                    
+                    navigator.clipboard.writeText(shre_url);
+                    
+         
+                    let yeahDoit = confirm("You freemap url has been copied to clipboard. Will now navigate you there ");
+                    if(yeahDoit) {
+                        
+                        window.open(shre_url,'_blank');
+                    }
+                    console.log(yeahDoit);
+                })
+                
                 let urlayerParam  = "u=" + a.href+"&f=" +  co2rgba(fill.value, op.value) + parseInt(r.value).toString(16).padStart(2, '0');
                 urlayerParam += "&s=" +  co2rgba(strokeC.value, strokeO.value) + stroke
                 
