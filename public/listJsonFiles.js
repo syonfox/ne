@@ -41,9 +41,8 @@ let domain = "https://ne.freemap.online/"
 //
 
 
-
 function findJsonFiles(directory) {
-    fs.readdirSync(directory, { withFileTypes: true }).forEach(entry => {
+    fs.readdirSync(directory, {withFileTypes: true}).forEach(entry => {
         const entryPath = path.join(directory, entry.name);
         if (entry.isDirectory()) {
             findJsonFiles(entryPath);
@@ -63,47 +62,68 @@ fs.writeFileSync('index.json', JSON.stringify(jsonFiles, null, 2));
 let ids
 let times = []
 let features = []
-const linksHtml = jsonFiles.map((file, index) => {
-
-    let now = Date.now()
-    let json = fs.readFileSync(file)
-    let data =JSON.parse(json);
-    let dt = Date.now()-now
-    times.push(dt)
-
-    // now = Date.now()
-    // getFirstFeatureOrFalse(file).then(d=>{
-    //     let ddt = Date.now()-now
-    //     console.log(ddt, "ms to get first only async",d)
-    // })
-
-    console.log("JSON LOAD TOOK: ", dt, "for filoe: ", file);
-    if(!data || !data.features || !data.features[0]) { // not a feature collection
-        return console.log("skiping not a feature collection!", file)
+let gotCache = false;
+try {
+    let cachedF = JSON.parse(fs.readFileSync("../features.json"))
+    console.log("Found ", cachedF.length, " cached features vs urls: ", jsonFiles.length);
+    console.assert(cachedF.length == jsonFiles.length)
+    if (cachedF) {
+        features = cachedF;
+        gotCache = true;
     }
-    let f = data.features[0]
+} catch (e) {
+    console.warn("No cached features failed to load dat shit ")
+}
 
-    features.push(f)
 
-    let humanInfo = "Feature Geometry Type: "+ f.geometry.type;
+const linksHtml = jsonFiles.map((file, index) => {
+    let f;
+
+    if (gotCache) {
+        f = features[index];
+    } else {
+        let now = Date.now()
+        let json = fs.readFileSync(file)
+        let data = JSON.parse(json);
+        let dt = Date.now() - now
+        times.push(dt)
+
+        // now = Date.now()
+        // getFirstFeatureOrFalse(file).then(d=>{
+        //     let ddt = Date.now()-now
+        //     console.log(ddt, "ms to get first only async",d)
+        // })
+
+        console.log("JSON LOAD TOOK: ", dt, "for filoe: ", file);
+        if (!data || !data.features || !data.features[0]) { // not a feature collection
+            return console.log("skiping not a feature collection!", file)
+        }
+        f = data.features[0]
+
+        features[index] = f;
+    }
+    if (!f) { // not a feature collection
+            return console.log("skiping not a feature collection!", file)
+    }
+    let humanInfo = "Feature Geometry Type: " + f.geometry.type;
 
     console.log(humanInfo);
 
-    humanInfo += " Properties: ["+ Object.keys(f.properties).join(", ")+"]"
+    humanInfo += " Properties: [" + Object.keys(f.properties).join(", ") + "]"
 
     let defaultColor = "#000096"
-    const url = domain+file; // Modify this if you need to transform the file path into a URL
+    const url = domain + file; // Modify this if you need to transform the file path into a URL
     return `<li id="style${index}" style="padding: 1em">
             <a href="${url}" target="_blank">${file}</a> - 
             <button onclick="navigator.clipboard.writeText('${url}')">Copy URL</button> - 
-<!--            <a href="https://freemap.online" target="_blank">Share on Freemap</a>-->
+            <a href="https://freemap.online/tools/zenVector.html?url=${url}" target="_blank">View In JSON Simplifier</a>
             
             <details>
             <summary>
                         Style: ${humanInfo}
-                        <div class="mydemo" style="background: ${defaultColor+"80"}; 
+                        <div class="mydemo" style="background: ${defaultColor + "80"}; 
                         border: 3px solid;
-                        border-color: ${defaultColor+"6E"}">
+                        border-color: ${defaultColor + "6E"}">
                         <span style="padding: 5px">Sample Style Rendering<span></div>
             </summary>
             
@@ -157,7 +177,7 @@ const htmlContent = `
     <p>Welcome to the FreeMap sample data, to use this side brows the natural earth data catalog whitch is all creative commons for the advancment of humanity.</p>
     <p>To use this site fist choose a layer. then desing a nice style for it. Finaly click the view in Freemap button to access the data directly.</p>
     <ul>
-        `+linksHtml+`
+        ` + linksHtml + `
     </ul>
     
     <script defer>
@@ -299,4 +319,4 @@ const htmlContent = `
 
 fs.writeFileSync('index.html', htmlContent);
 
-fs.writeFileSync('features.json', JSON.stringify(features));
+fs.writeFileSync('../features.json', JSON.stringify(features));
