@@ -145,6 +145,8 @@
   "50m/physical/ne_50m_rivers_lake_centerlines_scale_rank.json",
   "50m/physical/ne_50m_wgs84_bounding_box.json",
   "index.json",
+  "opt/great_wall_of_china_fullpasses_geo.json",
+  "opt/great_wall_of_cina_fulldirection.geo.json",
   "opt/ne_10m_admin_0_scale_rank_minor_islands.json",
   "opt/ne_10m_admin_1_states_provinces_lakes_simplified.json",
   "opt/ne_10m_admin_1_states_provinces_scale_rank_simplified.json",

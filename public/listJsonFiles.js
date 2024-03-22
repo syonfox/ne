@@ -144,9 +144,9 @@ const htmlContent = `
 </head>
 <body>
     <h1>GeoJSON Files Index</h1>
-    <p>Welcome to the FreeMap sample data, to use this side brows the natural earth data catalog whitch is all creative commons for the advancment of humanity.</p>
+    <p>Welcome to the FreeMap sample data, to use this site to browse the natural earth data catalog + extras whitch is all creative commons for the advancment of humanity.</p>
     <p>To use this site fist choose a layer. then desing a nice style for it. Finaly click the view in Freemap button to access the data directly.</p>
-    <p>Note that the data originaly comes from <a href="https://naturalearth.com " target="_blank">naturalearth.com</a>and we have have optimized the layers over 25mb to fit in cloud storage.</p>
+    <p>Note that the data originaly comes from <a href="https://naturalearth.com " target="_blank">naturalearth.com</a>and we have optimized the layers over 25mb to fit in cloud storage.</p>
     <p>This data is perfect for directly linking to onlin tools like <a href="https://freemap.online/map42" target="_blank">freemap.online</a></p>
     <ul>
         ` + linksHtml + `
