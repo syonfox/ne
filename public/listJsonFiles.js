@@ -68,7 +68,7 @@ const linksHtml = jsonFiles.map((file, index) => {
         features[index] = f;
     }
     if (!f) { // not a feature collection
-            return console.log("skiping not a feature collection!", file)
+        return console.log("skiping not a feature collection!", file)
     }
     let humanInfo = "Feature Geometry Type: " + f.geometry.type;
 
@@ -96,14 +96,17 @@ const linksHtml = jsonFiles.map((file, index) => {
             <input type="color" name="fill" value="${defaultColor}">    
              <input type="range" name="opacity" value="0.5" min="0" max="1" step="0.02">
              
-             <input type="range" name="radius" min="0" value="14" max="255" step="1">
+             <input type="range" name="radius" min="0" value="14" max="1" step="0.01">
 
+<span>Fill Color, Opacity, Circle radius: </span><span class="f"></span>
              <br>
             <input type="color" name="strokeColor" value="${defaultColor}E6">
             
             <input type="range" name="strokeOpacity" value="0.9" min="0" max="1" step="0.004">
 
-            <input type="range" name="stroke" min="0" value="3" max="1" step="0.02">
+            <input type="range" name="stroke" min="0" value="3" max="1" step="0.01">
+            <span>Stroke Color, Opacity, Weight: </span><span class="s"></span>
+
             <br>
             
             <input type="color" name="labelC" value="#00ff00">
@@ -111,6 +114,8 @@ const linksHtml = jsonFiles.map((file, index) => {
             <input type="range" name="labelO" value="0" min="0" max="1" step="0.004">
 
             <input type="range" name="labelS" min="0" value="0" max="1" step="0.004">
+            <span>Label Color, Opacity, Font Size: </span><span class="l"></span>
+
             <br>
             
             <input type="text" name="label" placeholder="Enter label Property">
@@ -143,11 +148,40 @@ const htmlContent = `
 <!--    <link rel="stylesheet" href="https://unpkg.com/water.css/out/water.css">-->
 </head>
 <body>
+
     <h1>GeoJSON Files Index</h1>
-    <p>Welcome to the FreeMap sample data, to use this site to browse the natural earth data catalog + extras whitch is all creative commons for the advancment of humanity.</p>
-    <p>To use this site fist choose a layer. then desing a nice style for it. Finaly click the view in Freemap button to access the data directly.</p>
-    <p>Note that the data originaly comes from <a href="https://naturalearth.com " target="_blank">naturalearth.com</a>and we have optimized the layers over 25mb to fit in cloud storage.</p>
-    <p>This data is perfect for directly linking to onlin tools like <a href="https://freemap.online/map42" target="_blank">freemap.online</a></p>
+<p>Welcome to the FreeMap Sample Data Portal! This platform is your gateway to a treasure trove of 
+Natural Earth data and additional resources, all freely available under Creative Commons licenses. 
+Our mission is to empower users like you to leverage this data for the greater good, 
+sparking innovation and inspiring possibilities across a multitude of applications, 
+from environmental conservation to urban planning.</p>
+<p>To embark on this journey, simply select a data layer that intrigues you.
+ Next, create a visually appealing style for it. Finally, click the "View in FreeMap" 
+ button to access the data directly. Our user-friendly process is designed to facilitate 
+ seamless integration with online tools and platforms, empowering you to make a difference.</p>
+<p>Accessibility is at the heart of our mission. As such, all links are provided with 
+descriptive titles and aria-labels for screen reader users. Please note: Our datasets, 
+originally sourced from 
+<a href="https://naturalearth.com" target="_blank" 
+title="Visit Natural Earth for more geographic data" 
+aria-label="Visit Natural Earth for more geographic data">Natural Earth</a>, 
+have been optimized for cloud storage, ensuring those larger than 25MB are easily accessible. 
+This makes it easier than ever to link the data directly to online tools, such as 
+<a href="https://freemap.online/map42" target="_blank" 
+title="Explore maps on FreeMap online" 
+aria-label="Explore maps on FreeMap online">freemap.online</a>, 
+empowering you to explore the full potential of geographic analysis.</p>
+
+    
+    <div style="position: relative; padding-top: 61.16700201207244%;">
+  <iframe
+    src="https://customer-xo9g3kj43f96x9nl.cloudflarestream.com/5dc5ea3a37f4f2fb5c1c6817fd3d9d4b/iframe?poster=https%3A%2F%2Fcustomer-xo9g3kj43f96x9nl.cloudflarestream.com%2F5dc5ea3a37f4f2fb5c1c6817fd3d9d4b%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&title=NE.FreeMap.Online+Style+Demo%2FTutorial&share-link=https%3A%2F%2Fne.freemap.online&channel-link=https%3A%2F%2Ffreemap.online"
+    loading="lazy"
+    style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+    allowfullscreen="true"
+  ></iframe>
+</div>
     <ul>
         ` + linksHtml + `
     </ul>
@@ -179,6 +213,13 @@ const htmlContent = `
                 let demo = el.querySelector(".mydemo")
                 let span = demo.querySelector("span")
                  
+                 let spans = {
+                    f: el.querySelector("span.f") ,
+                    s: el.querySelector("span.s") ,
+                    l: el.querySelector("span.l") ,
+                    
+                 }
+                 console.log(r);
                 let urlayer = el.querySelector("input[name='urlayer']") 
                 let open = el.querySelector("button[name='open']") 
                 let a = el.querySelector("a") 
@@ -194,13 +235,16 @@ const htmlContent = `
                         // let urlayer = "u="++ &f=#101010ff42&s=#111111ee02&l=#99ff990012$name";
 
                 const getFill = ()=>{
-                   return "f="+ co2rgba(fill.value, op.value) +  parseInt(r.value *100)
+                    spans.f.innerText = co2rgba(fill.value, op.value) +  parseInt(r.value *99).toString().padStart(2, '0')
+                    return "f="+  spans.f.innerText
                 }
                 const getStroke = ()=>{
-                   return "s="+ co2rgba(strokeC.value, strokeO.value) + parseInt(stroke.value * 100)
+                    spans.s.innerText = co2rgba(strokeC.value, strokeO.value) + parseInt(stroke.value * 99).toString().padStart(2, '0')
+                    return "s="+ spans.s.innerText
                 }
-                const getLabel = ()=>{
-                   return "l="+ co2rgba(co2rgba(labelC.value, labelO.value), labelS.value) + "$" +label.value
+                const getLabel = ()=>{ 
+                    spans.l.innerText = co2rgba(co2rgba(labelC.value, labelO.value), labelS.value) + "$" +label.value
+                    return "l="+ spans.l.innerText
                 }
 
 
@@ -235,6 +279,9 @@ const htmlContent = `
                 let shareUrl = "https://freemap.online/map42/?cfairport=1&urlayers=" + encjs(urlayers);
                 
                 
+                /////////////////////////////////////////
+                // Label Events
+                ////////////////////////////////////////
                 labelC.addEventListener("input", e=>{
                     let o = labelO.value;
                         if(o < 0.02) {
@@ -246,6 +293,8 @@ const htmlContent = `
                              span.style.color = "#000000"; 
                              span.style.background = co2rgba(labelC.value, labelO.value);
                         }
+                                            console.log(demo,getLabel())      
+
                 })
                 
                 labelO.addEventListener("input", e=>{
@@ -259,40 +308,61 @@ const htmlContent = `
                          span.style.color = "#000000"; 
                          span.style.background = co2rgba(labelC.value, labelO.value);
                     }
+                                        console.log(demo,getLabel())      
+
                   })
                 
                 labelS.addEventListener("input", e=>{
                     let s =  co2rgba("", labelS.value) + "px"      
-                    demo.style.fontSize =   s
-                    console.log(demo,s )      
+                    demo.style.fontSize = s
+                    getFill()
+                    console.log(demo,getLabel())      
                 })
                 console.log(shareUrl);
                 
+                
+                /////////////////////////////////////////
+                // Fill Events
+                ////////////////////////////////////////
                 fill.addEventListener("input", e=>{
                     demo.style.background = co2rgba(fill.value, op.value)
                     // demo.style.borderColor = fill.value
-                    
+                                        console.log(demo,getFill())      
+
                 })
                 
                 op.addEventListener("input", e=>{
                    demo.style.background = co2rgba(fill.value, op.value)
-                   
+                                                           console.log(demo,getFill())      
+
                 })
+                    r.addEventListener("input", e=>{
+                   // demo.style.background = 
+                                                           console.log(demo,getFill())      
+
+                }) 
                 
+                //////////////////////////////////////////////
+                //STROKE EVENTS
+                /////////////////////////////////////////////
                 strokeO.addEventListener("input", e=>{
       
                    demo.style.borderColor = co2rgba(strokeC.value, strokeO.value)
-               
+                                                            console.log(demo,getStroke())      
+
                 })
                 
                 strokeC.addEventListener("input", e=>{
                     // demo.style.background = fill.value;
                     
                     demo.style.borderColor = co2rgba(strokeC.value, strokeO.value)
-                    
+                                                            console.log(demo,getStroke())      
+
                 })
                 stroke.addEventListener("input", e=>{
                     demo.style.borderWidth = parseInt(stroke.value*24) + "px";
+                                                            console.log(demo,getStroke())      
+
                 })
                 // demo.style.opacity = op
                
