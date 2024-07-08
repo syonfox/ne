@@ -1,5 +1,18 @@
 # Natural Earth data in GeoJSON
 
+Modified and extended by syonfox at ENDpoint
+
+We are atemting to buid a free and open data catalog where users can find global datasets for 
+various topics. 
+
+Most extra data se well as a few optimized data layers from ne are in the opt folder
+
+NOTE: All data is hostend on cloudflare pages and thus file sizes are limited to 25mb
+
+View Live at https://ne.freemap.online
+
+Natural eeth information fallows, enjoy:
+
 [Natural Earth](http://www.naturalearthdata.com) "is a public domain map dataset available at 1:10m, 1:50m and 1:110 million scales."
 The vector data comes as [ESRI shapefiles](http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf).
 This repository provides the same data but converted to [GeoJSON](http://geojson.org), along with a compressed version.

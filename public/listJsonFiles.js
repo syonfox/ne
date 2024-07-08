@@ -96,15 +96,15 @@ const linksHtml = jsonFiles.map((file, index) => {
             <input type="color" name="fill" value="${defaultColor}">    
              <input type="range" name="opacity" value="0.5" min="0" max="1" step="0.02">
              
-             <input type="range" name="radius" min="0" value="14" max="1" step="0.01">
+             <input type="range" name="radius" min="0" value="0.2" max="1" step="0.01">
 
-<span>Fill Color, Opacity, Circle radius: </span><span class="f"></span>
+            <span>Fill Color, Opacity, Circle radius: </span><span class="f"></span>
              <br>
             <input type="color" name="strokeColor" value="${defaultColor}E6">
             
             <input type="range" name="strokeOpacity" value="0.9" min="0" max="1" step="0.004">
 
-            <input type="range" name="stroke" min="0" value="3" max="1" step="0.01">
+            <input type="range" name="stroke" min="0" value="0.2" max="1" step="0.01">
             <span>Stroke Color, Opacity, Weight: </span><span class="s"></span>
 
             <br>

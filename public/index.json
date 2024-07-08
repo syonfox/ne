@@ -156,5 +156,6 @@
   "opt/ne_10m_railroads_simplified.json",
   "opt/ne_10m_roads_more_props_more_simple.json",
   "opt/ne_10m_roads_ompimised_few_props.json",
-  "opt/ne_10m_urban_areas_simplified.json"
+  "opt/ne_10m_urban_areas_simplified.json",
+  "opt/open_peaks.geo.json"
 ]
