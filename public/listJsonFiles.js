@@ -12,6 +12,7 @@ function findJsonFiles(directory) {
         if (entry.isDirectory()) {
             findJsonFiles(entryPath);
         } else if (entry.isFile() && entry.name.endsWith('.json')) {
+            if(entry.name.startsWith("index.json")) return;
             jsonFiles.push(entryPath);
         }
     });
@@ -199,17 +200,17 @@ empowering you to explore the full potential of geographic analysis.</p>
                 let op = el.querySelector("input[name='opacity']") 
                 let r = el.querySelector("input[name='radius']") 
 
-//stroke props
+                    //stroke props
                 let strokeC = el.querySelector("input[name='strokeColor']") 
                 let strokeO = el.querySelector("input[name='strokeOpacity']") 
                 let stroke = el.querySelector("input[name='stroke']") 
-              // label props  
+                    // label props  
                 let labelC = el.querySelector("input[name='labelC']") 
                 let labelO = el.querySelector("input[name='labelO']") 
                 let labelS = el.querySelector("input[name='labelS']") 
                 let label = el.querySelector("input[name='label']") 
                 
-                //sample style div
+                    //sample style div
                 let demo = el.querySelector(".mydemo")
                 let span = demo.querySelector("span")
                  
@@ -293,7 +294,7 @@ empowering you to explore the full potential of geographic analysis.</p>
                              span.style.color = "#000000"; 
                              span.style.background = co2rgba(labelC.value, labelO.value);
                         }
-                                            console.log(demo,getLabel())      
+                        console.log(demo,getLabel())      
 
                 })
                 
@@ -326,20 +327,15 @@ empowering you to explore the full potential of geographic analysis.</p>
                 ////////////////////////////////////////
                 fill.addEventListener("input", e=>{
                     demo.style.background = co2rgba(fill.value, op.value)
-                    // demo.style.borderColor = fill.value
-                                        console.log(demo,getFill())      
-
+                    console.log(demo,getFill())      
                 })
                 
                 op.addEventListener("input", e=>{
                    demo.style.background = co2rgba(fill.value, op.value)
-                                                           console.log(demo,getFill())      
-
+                   console.log(demo,getFill())      
                 })
                     r.addEventListener("input", e=>{
-                   // demo.style.background = 
-                                                           console.log(demo,getFill())      
-
+                   console.log(demo,getFill())      
                 }) 
                 
                 //////////////////////////////////////////////
@@ -348,7 +344,7 @@ empowering you to explore the full potential of geographic analysis.</p>
                 strokeO.addEventListener("input", e=>{
       
                    demo.style.borderColor = co2rgba(strokeC.value, strokeO.value)
-                                                            console.log(demo,getStroke())      
+                   console.log(demo,getStroke())      
 
                 })
                 
@@ -356,20 +352,17 @@ empowering you to explore the full potential of geographic analysis.</p>
                     // demo.style.background = fill.value;
                     
                     demo.style.borderColor = co2rgba(strokeC.value, strokeO.value)
-                                                            console.log(demo,getStroke())      
+                    console.log(demo,getStroke())      
 
                 })
                 stroke.addEventListener("input", e=>{
                     demo.style.borderWidth = parseInt(stroke.value*24) + "px";
-                                                            console.log(demo,getStroke())      
+                    console.log(demo,getStroke())      
 
                 })
                 // demo.style.opacity = op
                
-    
     })
-    
-    // is.forEach() 
     
     
    </script>
